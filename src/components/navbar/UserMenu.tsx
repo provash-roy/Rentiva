@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Menu, User, LogOut, Home, Calendar } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Avatar from "../Avatar";
 
 interface UserMenuProps {
@@ -9,9 +10,15 @@ interface UserMenuProps {
     name?: string | null;
     image?: string | null;
   } | null;
+  onLoginOpen: () => void;
+  onRegisterOpen: () => void;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+const UserMenu: React.FC<UserMenuProps> = ({
+  currentUser,
+  onLoginOpen,
+  onRegisterOpen,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +26,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     setIsOpen((prev) => !prev);
   };
 
-  // Close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -51,12 +57,24 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             <>
               <MenuItem icon={<Home size={16} />} label="My Properties" />
               <MenuItem icon={<Calendar size={16} />} label="My Trips" />
-              <MenuItem icon={<LogOut size={16} />} label="Logout" />
+              <MenuItem
+                icon={<LogOut size={16} />}
+                label="Logout"
+                onClick={() => signOut()}
+              />
             </>
           ) : (
             <>
-              <MenuItem icon={<User size={16} />} label="Login" />
-              <MenuItem icon={<User size={16} />} label="Sign Up" />
+              <MenuItem
+                icon={<User size={16} />}
+                label="Login"
+                onClick={onLoginOpen}
+              />
+              <MenuItem
+                icon={<User size={16} />}
+                label="Sign Up"
+                onClick={onRegisterOpen}
+              />
             </>
           )}
         </div>
@@ -68,11 +86,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 interface MenuItemProps {
   icon: React.ReactNode;
   label: string;
+  onClick?: () => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ icon, label }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ icon, label, onClick }) => {
   return (
-    <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition">
+    <div
+      onClick={onClick}
+      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition"
+    >
       {icon}
       <span>{label}</span>
     </div>

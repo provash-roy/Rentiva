@@ -1,35 +1,43 @@
 "use client";
 
-import Link from "next/link";
-import Search from "./Search";
+import { useState } from "react";
 import UserMenu from "./UserMenu";
+import Search from "./Search";
+import AuthModal from "../modals/AuthModal";
 
-const Navbar = ({
-  currentUser,
-}: {
-  currentUser?: { name?: string; image?: string } | null;
-}) => {
+const Navbar = ({ currentUser }: any) => {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
   return (
-    <nav className="w-full fixed top-0 z-50 bg-white shadow-sm">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-row items-center justify-between h-16">
-          {/* Left - Logo */}
-          <Link href="/" className="text-2xl font-bold text-rose-500">
-            StayNest
-          </Link>
+    <>
+      <nav className="fixed w-full bg-white shadow-sm z-50">
+        <div className="max-w-screen-xl mx-auto px-4 flex justify-between items-center h-16">
+          <div className="text-rose-500 font-bold text-xl">StayNest</div>
 
-          {/* Center - Search */}
-          <div className="flex-1 px-4 hidden md:flex justify-center">
-            <Search />
-          </div>
+          <Search />
 
-          {/* Right - User Menu */}
-          <div className="flex items-center gap-3">
-            <UserMenu currentUser={currentUser} />
-          </div>
+          <UserMenu
+            currentUser={currentUser}
+            onLoginOpen={() => setIsLoginOpen(true)}
+            onRegisterOpen={() => setIsRegisterOpen(true)}
+          />
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Modals */}
+      <AuthModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        variant="login"
+      />
+
+      <AuthModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        variant="register"
+      />
+    </>
   );
 };
 
