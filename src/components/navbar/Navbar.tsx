@@ -2,6 +2,7 @@
 
 import UserMenu from "./UserMenu";
 import Search from "./Search";
+import Category from "./Category";
 
 interface NavbarProps {
   currentUser?: {
@@ -21,6 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
 
           <UserMenu currentUser={currentUser} />
         </div>
+        <Category />
       </nav>
     </>
   );
