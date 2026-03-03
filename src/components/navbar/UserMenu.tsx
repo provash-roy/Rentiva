@@ -1,9 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Menu, User, LogOut, Home, Calendar } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Avatar from "../Avatar";
+import { Menu, Home, Calendar, LogOut, User } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface UserMenuProps {
   currentUser?: {
@@ -19,85 +26,63 @@ const UserMenu: React.FC<UserMenuProps> = ({
   onLoginOpen,
   onRegisterOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <div className="relative" ref={menuRef}>
+    <DropdownMenu>
       {/* Trigger */}
-      <div
-        onClick={toggleMenu}
-        className="flex items-center gap-3 p-2 border border-gray-300 rounded-full cursor-pointer hover:shadow-md transition"
-      >
-        <Menu size={20} />
-        <div className="hidden md:block">
-          <Avatar src={currentUser?.image} />
+      <DropdownMenuTrigger asChild>
+        <div className="flex items-center gap-3 p-2 border border-gray-300 rounded-full cursor-pointer hover:shadow-md transition">
+          <Menu size={20} />
+          <div className="hidden md:block">
+            <Avatar src={currentUser?.image} />
+          </div>
         </div>
-      </div>
+      </DropdownMenuTrigger>
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div className="absolute right-0 top-12 w-56 bg-white rounded-xl shadow-md overflow-hidden text-sm">
-          {currentUser ? (
-            <>
-              <MenuItem icon={<Home size={16} />} label="My Properties" />
-              <MenuItem icon={<Calendar size={16} />} label="My Trips" />
-              <MenuItem
-                icon={<LogOut size={16} />}
-                label="Logout"
-                onClick={() => signOut()}
-              />
-            </>
-          ) : (
-            <>
-              <MenuItem
-                icon={<User size={16} />}
-                label="Login"
-                onClick={onLoginOpen}
-              />
-              <MenuItem
-                icon={<User size={16} />}
-                label="Sign Up"
-                onClick={onRegisterOpen}
-              />
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
+      {/* Dropdown Content */}
+      <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-lg">
+        {currentUser ? (
+          <>
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+              <Home size={16} />
+              <span>My Properties</span>
+            </DropdownMenuItem>
 
-interface MenuItemProps {
-  icon: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-}
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+              <Calendar size={16} />
+              <span>My Trips</span>
+            </DropdownMenuItem>
 
-const MenuItem: React.FC<MenuItemProps> = ({ icon, label, onClick }) => {
-  return (
-    <div
-      onClick={onClick}
-      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition"
-    >
-      {icon}
-      <span>{label}</span>
-    </div>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => signOut()}
+              className="flex items-center gap-2 text-red-500 cursor-pointer"
+            >
+              <LogOut size={16} />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <>
+            <DropdownMenuItem
+              onClick={onLoginOpen}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <User size={16} />
+              <span>Login</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={onRegisterOpen}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <User size={16} />
+              <span>Sign Up</span>
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

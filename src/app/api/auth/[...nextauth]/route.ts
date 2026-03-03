@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
@@ -51,13 +51,13 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user?._id) token.id = user._id;
-      if (user?.role) token.role = user.role;
+      //   if (user?._id) token.id = user._id;
+      //   if (user?.role) token.role = user.role;
       return token;
     },
     async session({ session, token }) {
-      if (token?.id) session.user.id = token.id as string;
-      if (token?.role) session.user.role = token.role as "user" | "admin";
+      //   if (token?.id) session.user.id = token.id as string;
+      //   if (token?.role) session.user.role = token.role as "user" | "admin";
       return session;
     },
   },

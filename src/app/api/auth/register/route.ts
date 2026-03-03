@@ -4,7 +4,7 @@ import User from "@/models/User";
 import { connectToDatabase } from "@/lib/mongoose";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  const {name, email, password } = await req.json();
 
   await connectToDatabase();
 
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await User.create({
+    name,
     email,
     password: hashedPassword,
   });

@@ -5,7 +5,14 @@ import UserMenu from "./UserMenu";
 import Search from "./Search";
 import AuthModal from "../modals/AuthModal";
 
-const Navbar = ({ currentUser }: any) => {
+interface NavbarProps {
+  currentUser?: {
+    name?: string | null;
+    image?: string | null;
+  } | null;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
