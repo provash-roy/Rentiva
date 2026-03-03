@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import Link from "next/link";
 import Avatar from "../Avatar";
 import { Menu, Home, Calendar, LogOut, User } from "lucide-react";
 
@@ -11,21 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 interface UserMenuProps {
-  currentUser?: {
-    name?: string | null;
-    image?: string | null;
-  } | null;
-  onLoginOpen: () => void;
-  onRegisterOpen: () => void;
+  currentUser?: { image?: string | null } | null;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({
-  currentUser,
-  onLoginOpen,
-  onRegisterOpen,
-}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   return (
     <DropdownMenu>
       {/* Trigger */}
@@ -42,18 +34,25 @@ const UserMenu: React.FC<UserMenuProps> = ({
       <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-lg">
         {currentUser ? (
           <>
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-              <Home size={16} />
-              <span>My Properties</span>
+            {/* My Properties */}
+            <DropdownMenuItem asChild>
+              <Link href="/my-properties" className="flex items-center gap-2">
+                <Home size={16} />
+                <span>My Properties</span>
+              </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-              <Calendar size={16} />
-              <span>My Trips</span>
+            {/* My Trips */}
+            <DropdownMenuItem asChild>
+              <Link href="/my-trips" className="flex items-center gap-2">
+                <Calendar size={16} />
+                <span>My Trips</span>
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
+            {/* Logout */}
             <DropdownMenuItem
               onClick={() => signOut()}
               className="flex items-center gap-2 text-red-500 cursor-pointer"
@@ -64,20 +63,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
           </>
         ) : (
           <>
-            <DropdownMenuItem
-              onClick={onLoginOpen}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <User size={16} />
-              <span>Login</span>
+            {/* Login */}
+            <DropdownMenuItem asChild>
+              <Link href="/login" className="flex items-center gap-2">
+                <User size={16} />
+                <span>Login</span>
+              </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem
-              onClick={onRegisterOpen}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <User size={16} />
-              <span>Sign Up</span>
+            {/* Sign Up */}
+            <DropdownMenuItem asChild>
+              <Link href="/register" className="flex items-center gap-2">
+                <User size={16} />
+                <span>Sign Up</span>
+              </Link>
             </DropdownMenuItem>
           </>
         )}

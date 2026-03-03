@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import UserMenu from "./UserMenu";
 import Search from "./Search";
-import AuthModal from "../modals/AuthModal";
 
 interface NavbarProps {
   currentUser?: {
@@ -13,9 +11,6 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-
   return (
     <>
       <nav className="fixed w-full bg-white shadow-sm z-50">
@@ -24,26 +19,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
 
           <Search />
 
-          <UserMenu
-            currentUser={currentUser}
-            onLoginOpen={() => setIsLoginOpen(true)}
-            onRegisterOpen={() => setIsRegisterOpen(true)}
-          />
+          <UserMenu currentUser={currentUser} />
         </div>
       </nav>
-
-      {/* Modals */}
-      <AuthModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        variant="login"
-      />
-
-      <AuthModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-        variant="register"
-      />
     </>
   );
 };
