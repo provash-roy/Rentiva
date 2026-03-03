@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { categories } from "../navbar/categories";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface RentModalProps {
   isOpen: boolean;
@@ -44,16 +46,20 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleSubmit = () => {
-    const data = {
+  const handleSubmit = async () => {
+    await axios.post("/api/listings", {
       category,
       description,
       image,
       guests,
-    };
-
-    console.log("Listing Created:", data);
+    });
+    setCategory("");
+    setDescription("");
+    setImage("");
+    setGuests(1);
+    setStep(STEPS.CATEGORY);
     onClose();
+    toast("Your listing has been created.");
   };
 
   let bodyContent;
