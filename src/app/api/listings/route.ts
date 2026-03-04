@@ -11,3 +11,10 @@ export async function POST(req: Request) {
 
   return NextResponse.json(listing);
 }
+
+export async function GET() {
+  await connectToDatabase();
+
+  const listings = await Listing.find().sort({ createdAt: -1 });
+  return NextResponse.json(listings);
+}

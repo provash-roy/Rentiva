@@ -43,6 +43,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+  
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Login</DialogTitle>
