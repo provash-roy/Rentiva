@@ -30,8 +30,13 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         await connectToDatabase();
 
-        const user = await User.findOne({ email: credentials?.email });
+        const user = await User.findOne({
+          email: credentials?.email,
+        });
+
         if (!user) return null;
+
+        if (!user.password) return null;
 
         const isValid = await bcrypt.compare(
           credentials!.password,
@@ -44,6 +49,7 @@ export const authOptions: NextAuthOptions = {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
+          role: user.role,
         };
       },
     }),
@@ -51,13 +57,18 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      //   if (user?._id) token.id = user._id;
-      //   if (user?.role) token.role = user.role;
+      if (user) {
+        token.id = user.id;
+        token.role = user.role || "guest";
+      }
       return token;
     },
+
     async session({ session, token }) {
-      //   if (token?.id) session.user.id = token.id as string;
-      //   if (token?.role) session.user.role = token.role as "user" | "admin";
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as "guest" | "host" | "admin";
+      }
       return session;
     },
   },

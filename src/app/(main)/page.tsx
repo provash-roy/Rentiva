@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useListings from "./hooks/useListings";
+import useListings from "../hooks/useListings";
 
 export default function Home() {
   const { listings, loading, error } = useListings();

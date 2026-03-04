@@ -6,6 +6,13 @@ import { connectToDatabase } from "@/lib/mongoose";
 export async function POST(req: Request) {
   const { name, email, password } = await req.json();
 
+  if (!name || !email || !password) {
+    return NextResponse.json(
+      { error: "Missing required fields" },
+      { status: 400 },
+    );
+  }
+
   await connectToDatabase();
 
   const existingUser = await User.findOne({ email });

@@ -8,4 +8,6 @@ export interface IUser {
   role: "guest" | "host" | "admin";
   isVerified: boolean;
   wishlist: mongoose.Types.ObjectId[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

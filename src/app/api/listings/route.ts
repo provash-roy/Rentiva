@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Listing from "@/models/Listing";
+import Listing from "@/models/listing.model";
 import { connectToDatabase } from "@/lib/mongoose";
 
 export async function POST(req: Request) {
