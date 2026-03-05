@@ -1,15 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import { IReview } from "@/types/review.types";
 
-const reviewSchema = new mongoose.Schema(
+const reviewSchema = new Schema<IReview>(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
     listing: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Listing",
       required: true,
     },
@@ -29,7 +30,7 @@ const reviewSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model<IReview>("Review", reviewSchema);
