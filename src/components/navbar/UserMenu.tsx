@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Avatar from "../Avatar";
 import { Menu, Home, Calendar, LogOut, User } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,13 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
-interface UserMenuProps {
-  currentUser?: { image?: string | null } | null;
-}
+const UserMenu = () => {
+  const { data: session, status } = useSession();
+  const currentUser = session?.user;
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   return (
     <DropdownMenu>
       {/* Trigger */}
@@ -32,7 +30,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
       {/* Dropdown Content */}
       <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-lg">
-        {currentUser ? (
+        {status === "loading" ? (
+          <div className="p-2 text-center text-gray-500">Loading...</div>
+        ) : currentUser ? (
           <>
             {/* My Properties */}
             <DropdownMenuItem asChild>

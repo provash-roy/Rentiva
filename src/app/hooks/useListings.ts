@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -20,8 +21,8 @@ const useListings = () => {
       setLoading(true);
       const { data } = await axios.get("/api/listings");
       setListings(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch listings");
+    } catch (err) {
+      setError("Failed to fetch listings");
     } finally {
       setLoading(false);
     }

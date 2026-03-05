@@ -1,0 +1,20 @@
+import { Types } from "mongoose";
+
+export interface IBooking {
+  _id?: Types.ObjectId;
+
+  user: Types.ObjectId;
+
+  listing: Types.ObjectId;
+
+  checkIn: Date;
+
+  checkOut: Date;
+
+  totalPrice: number;
+
+  status: "pending" | "confirmed" | "cancelled";
+
+  createdAt?: Date;
+  updatedAt?: Date;
+}

@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import User from "@/models/user.model";
 import { connectToDatabase } from "@/lib/mongoose";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../app/api/auth/[...nextauth]/route";
 
 export async function getCurrentUser() {
   await connectToDatabase();

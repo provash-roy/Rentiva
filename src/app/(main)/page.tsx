@@ -1,10 +1,32 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useListings from "../hooks/useListings";
+import ListingCard from "@/components/listings/ListingCard";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+interface Listing {
+  _id: string;
+  category: string;
+  title: string;
+  description: string;
+  pricePerNight: number;
+  images: string[];
+  host?: { name?: string; email?: string };
+  location?: { city?: string; country?: string };
+}
 
 export default function Home() {
-  const { listings, loading, error } = useListings();
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("/api/listings")
+      .then((res) => setListings(res.data.data))
+      .catch((err) => setError("Failed to load listings"))
+      .finally(() => setLoading(false));
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -13,19 +35,7 @@ export default function Home() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {listings.map((listing) => (
-        <Card key={listing._id} className="rounded-2xl overflow-hidden">
-          <CardContent>
-            <CardHeader>
-              <CardTitle className="font-semibold">
-                {listing.category}
-              </CardTitle>
-            </CardHeader>
-            <p>{listing.description}</p>
-            <p className="mt-2 text-sm text-gray-500">
-              Guests: {listing.guests}
-            </p>
-          </CardContent>
-        </Card>
+        <ListingCard key={listing._id} listing={listing} />
       ))}
     </div>
   );

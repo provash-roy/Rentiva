@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { categories } from "./categories";
 
-const CategoryTabs = () => {
+const Category = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -73,4 +73,4 @@ const CategoryTabs = () => {
   );
 };
 
-export default CategoryTabs;
+export default Category;

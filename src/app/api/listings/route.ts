@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Listing from "@/models/listing.model";
 import { connectToDatabase } from "@/lib/mongoose";
-import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { getCurrentUser } from "@/actions/getCurrentUser";
 
 export async function POST(req: Request) {
   try {
@@ -25,6 +25,7 @@ export async function POST(req: Request) {
       location,
     } = body;
 
+   
     if (
       !category ||
       !title ||
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
       images,
       maxGuests,
       location,
-      host: currentUser._id,
+      host: currentUser._id, 
     });
 
     return NextResponse.json(
@@ -66,6 +67,7 @@ export async function POST(req: Request) {
     );
   }
 }
+
 
 export async function GET() {
   try {
