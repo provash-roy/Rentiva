@@ -1,7 +1,6 @@
-// models/Booking.ts
 
 import mongoose, { Schema, model, models } from "mongoose";
-import { IBooking } from "@/types/booking";
+import { IBooking } from "@/types/booking.types";
 
 const bookingSchema = new Schema<IBooking>(
   {
