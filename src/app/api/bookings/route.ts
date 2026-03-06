@@ -18,10 +18,26 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  // user._id,
+
+  const existingBooking = await Booking.findOne({
+    listing,
+    $or: [
+      {
+        checkIn: { $lte: checkOut },
+        checkOut: { $gte: checkIn },
+      },
+    ],
+  });
+
+  if (existingBooking) {
+    return NextResponse.json(
+      { message: "Listing already booked for these dates" },
+      { status: 400 },
+    );
+  }
 
   const bookings = await Booking.create({
-    user: "65e89b23b7c8d1c123456789",
+    user: user._id,
     listing,
     checkIn,
     checkOut,
