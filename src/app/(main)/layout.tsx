@@ -3,7 +3,7 @@
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
-import Category from "@/components/navbar/Category";
+import Category from "@/components/categories/Category";
 
 export default function MainLayout({
   children,

@@ -2,7 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { categories } from "./categories";
+import { categories } from "./navbar/categories";
 
 const Category = () => {
   const router = useRouter();

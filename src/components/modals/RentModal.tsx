@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { categories } from "../navbar/categories";
+import { categories } from "../categories/categories";
 import axios from "axios";
 import toast from "react-hot-toast";
 

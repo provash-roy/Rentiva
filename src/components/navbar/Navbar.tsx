@@ -3,7 +3,6 @@
 import { useState } from "react";
 import UserMenu from "./UserMenu";
 import Search from "./Search";
-import Category from "./Category";
 import Container from "../Container";
 import RentModal from "../modals/RentModal";
 import { Button } from "../ui/button";
@@ -27,8 +26,12 @@ const Navbar = () => {
               <Search />
             </div>
 
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" onClick={() => setIsRentOpen(true)}>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsRentOpen(true)}
+              >
                 Rent Your Home
               </Button>
               <UserMenu />
