@@ -5,10 +5,10 @@ interface ContainerProps {
   className?: string;
 }
 
-const Container: React.FC<ContainerProps> = ({ children, className }) => {
+const Container = ({ children, className }: ContainerProps) => {
   return (
     <div
-      className={`max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 ${className || ""}`}
+      className={`max-w-7xlxl mx-auto px-4 sm:px-6 lg:px-8 ${className || ""}`}
     >
       {children}
     </div>

@@ -18,7 +18,6 @@ const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      {/* Trigger */}
       <DropdownMenuTrigger asChild>
         <div className="flex items-center gap-3 p-2 border border-gray-300 rounded-full cursor-pointer hover:shadow-md transition">
           <Menu size={20} />

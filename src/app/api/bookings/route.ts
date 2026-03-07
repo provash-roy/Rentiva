@@ -21,12 +21,8 @@ export async function POST(req: Request) {
 
   const existingBooking = await Booking.findOne({
     listing,
-    $or: [
-      {
-        checkIn: { $lte: checkOut },
-        checkOut: { $gte: checkIn },
-      },
-    ],
+    checkIn: { $lte: checkOut },
+    checkOut: { $gte: checkIn },
   });
 
   if (existingBooking) {
