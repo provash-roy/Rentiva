@@ -6,10 +6,10 @@ export default function Logo() {
     <Link href="/" className="flex items-center">
       <Image
         src="/images/logo.png"
-        width={90}
+        width={70}
         height={30}
         alt="Rentiva"
-        className="object-contain"
+        className="object-cover"
         priority
       />
     </Link>

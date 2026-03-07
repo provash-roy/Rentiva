@@ -33,7 +33,7 @@ export default function Home() {
   if (!listings.length) return <p>No listings found</p>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       {listings.map((listing) => (
         <ListingCard key={listing._id} listing={listing} />
       ))}
