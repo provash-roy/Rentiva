@@ -94,3 +94,29 @@ export async function GET() {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectToDatabase();
+
+    const listings = await Listing.find()
+      .populate("host", "name email image")
+      .sort({ createdAt: -1 });
+
+    return NextResponse.json(
+      {
+        success: true,
+        count: listings.length,
+        data: listings,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("GET LISTINGS ERROR:", error);
+
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}

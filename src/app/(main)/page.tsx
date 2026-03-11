@@ -2,6 +2,7 @@
 
 import ListingCard from "@/components/listings/ListingCard";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Listing {
@@ -35,7 +36,9 @@ export default function Home() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       {listings.map((listing) => (
-        <ListingCard key={listing._id} listing={listing} />
+        <Link href={`/${listing._id}`} key={listing._id}>
+          <ListingCard listing={listing} />
+        </Link>
       ))}
     </div>
   );

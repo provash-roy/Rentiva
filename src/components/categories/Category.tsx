@@ -24,7 +24,7 @@ const Category = () => {
   };
 
   return (
-    <div className="w-full border-b bg-white sticky top-16 z-40">
+    <div className="w-full border-b bg-white sticky top-16 z-40 ">
       <Tabs value={activeCategory} onValueChange={handleChange}>
         <TabsList variant="line" className="w-full h-16 bg-white px-4 py-2">
           {categories.map((category) => {
