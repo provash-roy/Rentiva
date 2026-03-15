@@ -25,7 +25,6 @@ export async function POST(req: Request) {
       location,
     } = body;
 
-   
     if (
       !category ||
       !title ||
@@ -48,7 +47,7 @@ export async function POST(req: Request) {
       images,
       maxGuests,
       location,
-      host: currentUser._id, 
+      host: currentUser._id,
     });
 
     return NextResponse.json(
@@ -60,33 +59,6 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.error("CREATE LISTING ERROR:", error);
-
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 },
-    );
-  }
-}
-
-
-export async function GET() {
-  try {
-    await connectToDatabase();
-
-    const listings = await Listing.find()
-      .populate("host", "name email image")
-      .sort({ createdAt: -1 });
-
-    return NextResponse.json(
-      {
-        success: true,
-        count: listings.length,
-        data: listings,
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("GET LISTINGS ERROR:", error);
 
     return NextResponse.json(
       { message: "Internal Server Error" },

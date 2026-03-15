@@ -3,6 +3,7 @@
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 import Category from "@/components/categories/Category";
 import Container from "@/components/Container";
 
@@ -15,11 +16,13 @@ export default function MainLayout({
     <SessionProvider>
       <Navbar />
       <Container className="pt-20">
-        <Category />
+        <Suspense fallback={<div className="h-10" />}>
+          <Category />
+        </Suspense>
       </Container>
       <Container className="pt-2">{children}</Container>
 
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-left" reverseOrder={false} />
     </SessionProvider>
   );
 }

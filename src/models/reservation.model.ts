@@ -1,8 +1,7 @@
+import  { Schema, model, models } from "mongoose";
+import { IReservation } from "@/types/reservation.types";
 
-import mongoose, { Schema, model, models } from "mongoose";
-import { IBooking } from "@/types/booking.types";
-
-const bookingSchema = new Schema<IBooking>(
+const reservationSchema = new Schema<IReservation>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -40,6 +39,6 @@ const bookingSchema = new Schema<IBooking>(
   { timestamps: true },
 );
 
-const Booking = models.Booking || model<IBooking>("Booking", bookingSchema);
+const Reservation = model<IReservation>("Reservation", reservationSchema);
 
-export default Booking;
+export default Reservation;

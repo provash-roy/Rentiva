@@ -1,0 +1,35 @@
+
+> rentiva@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.6s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+(node:28280) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:20572) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:29372) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  Generating static pages using 7 workers (0/8) ...
+  Generating static pages using 7 workers (2/8) 
+(node:24100) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+⨯ useSearchParams() should be wrapped in a suspense boundary at page "/". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+    at Q (C:\Projects\rentiva\.next\server\chunks\ssr\_c1da015e._.js:2:2111)
+    at o (C:\Projects\rentiva\.next\server\chunks\ssr\_c1da015e._.js:4:5284)
+    at k0 (C:\Projects\rentiva\.next\server\chunks\ssr\[root-of-the-server]__32f5dc62._.js:9:39601)
+    at an (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:84360)
+    at ai (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:86179)
+    at al (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:107953)
+    at as (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:105368)
+    at am (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:112882)
+    at ai (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:98808)
+    at al (C:\Projects\rentiva\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.prod.js:2:107953)
+Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+Export encountered an error on /(main)/page: /, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null

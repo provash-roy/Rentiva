@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IPayment {
-  booking: Types.ObjectId;
+  reservation: Types.ObjectId;
   user: Types.ObjectId;
   amount: number;
   paymentMethod?: string;

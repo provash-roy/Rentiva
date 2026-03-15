@@ -1,9 +1,6 @@
-"use client";
-
+import getListings from "@/actions/getListings";
 import ListingCard from "@/components/listings/ListingCard";
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 interface Listing {
   _id: string;
@@ -16,27 +13,15 @@ interface Listing {
   location?: { city?: string; country?: string };
 }
 
-export default function Home() {
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+export default async function Home() {
+  const listings = await getListings();
 
-  useEffect(() => {
-    axios
-      .get("/api/listings")
-      .then((res) => setListings(res.data.data))
-      .catch((err) => setError("Failed to load listings"))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-  if (!listings.length) return <p>No listings found</p>;
+  if (!listings) return <p>No listings found</p>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      {listings.map((listing) => (
-        <Link href={`/${listing._id}`} key={listing._id}>
+      {listings.map((listing: Listing) => (
+        <Link href={`/listings/${listing._id}`} key={listing._id}>
           <ListingCard listing={listing} />
         </Link>
       ))}

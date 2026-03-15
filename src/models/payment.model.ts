@@ -3,9 +3,9 @@ import { IPayment } from "@/types/payment.types";
 
 const paymentSchema = new Schema<IPayment>(
   {
-    booking: {
+    reservation: {
       type: Schema.Types.ObjectId,
-      ref: "Booking",
+      ref: "Reservation",
       required: true,
     },
 

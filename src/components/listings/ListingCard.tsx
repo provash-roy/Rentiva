@@ -21,7 +21,6 @@ export default function ListingCard({ listing }: ListingCardProps) {
         <img
           src={listing.images?.[0] || "/placeholder.jpg"}
           alt={listing.title}
-          fill
           className="object-cover"
         />
 

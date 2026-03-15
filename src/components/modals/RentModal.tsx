@@ -37,8 +37,6 @@ enum STEPS {
   GUESTS = 4,
 }
 
-const Map = dynamic(() => import("@/components/Map"), { ssr: false });
-
 interface CountryOption {
   value: string;
   label: string;
@@ -51,10 +49,12 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
     null,
   );
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
   const [mapPosition, setMapPosition] = useState<[number, number]>([
     51.505, -0.09,
   ]);
-  const [popupText, setPopupText] = useState("London");
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [pricePerNight, setPricePerNight] = useState(0);
@@ -70,35 +70,45 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
 
   const handleCountryChange = (option: CountryOption | null) => {
     setSelectedCountry(option);
-
     if (option?.countryData?.latlng) {
       const [lat, lng] = option.countryData.latlng;
       setMapPosition([lat, lng]);
-      setPopupText(option.countryData.name.common);
+      // setPopupText(option.countryData.name.common);
     }
   };
 
   const onNext = () => {
-    if (step !== STEPS.GUESTS) {
-      setStep((prev) => prev + 1);
-    } else {
-      handleSubmit();
-    }
+    setStep((prev) => (prev < STEPS.GUESTS ? prev + 1 : prev));
   };
 
   const onBack = () => {
-    if (step !== STEPS.CATEGORY) {
-      setStep((prev) => prev - 1);
-    }
+    setStep((prev) => (prev > STEPS.CATEGORY ? prev - 1 : prev));
   };
 
   const handleSubmit = async () => {
+    if (
+      !category ||
+      !selectedCountry ||
+      !city ||
+      !address ||
+      !title ||
+      !description ||
+      !pricePerNight ||
+      !image ||
+      !maxGuests
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     try {
       setLoading(true);
 
       await axios.post("/api/listings", {
         category,
-        country: selectedCountry?.label,
+        country: selectedCountry.label,
+        city,
+        address,
         location: mapPosition,
         title,
         description,
@@ -109,16 +119,19 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
 
       toast.success("Your listing has been created 🎉");
 
-      // Reset form
+      // Reset all
       setCategory("");
       setSelectedCountry(null);
+      setCity("");
+      setAddress("");
+      setMapPosition([51.505, -0.09]);
+
       setTitle("");
       setDescription("");
       setPricePerNight(0);
       setImage("");
       setMaxGuests(1);
       setStep(STEPS.CATEGORY);
-
       onClose();
     } catch (error) {
       toast.error("Something went wrong");
@@ -135,7 +148,6 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {categories.map((item) => {
           const Icon = item.icon;
-
           return (
             <div
               key={item.value}
@@ -160,14 +172,7 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="space-y-6">
-        <div>
-          <h2 className="text-lg font-semibold">
-            Where is your place located?
-          </h2>
-          <p className="text-sm text-gray-500">
-            Select a country to display it on the map
-          </p>
-        </div>
+        <h2 className="text-lg font-semibold">Where is your place located?</h2>
 
         <div className="space-y-2">
           <Label>Select Country</Label>
@@ -180,45 +185,60 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
             menuPortalTarget={
               typeof window !== "undefined" ? document.body : null
             }
-            styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-            }}
+            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
           />
         </div>
 
-        <div className="rounded-xl overflow-hidden border shadow-sm">
-          <Map position={mapPosition} zoom={4} popupText={popupText} />
+        <div className="space-y-2">
+          <Label>City</Label>
+          <Input
+            placeholder="Enter city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Street Address</Label>
+          <Input
+            placeholder="Enter street address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
         </div>
       </div>
     );
   }
-
   // STEP 3: DETAILS
   if (step === STEPS.DETAILS) {
     bodyContent = (
-      <div className="space-y-4">
-        <div>
+      <div className="flex flex-col gap-6">
+        {" "}
+        {/* gap-6 দিয়ে y-axis space বাড়ানো */}
+        {/* Title */}
+        <div className="flex flex-col gap-2">
           <Label>Title</Label>
           <Input
+            placeholder="Beautiful apartment in city center"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Beautiful apartment in city center"
           />
         </div>
-
-        <div>
+     
+        <div className="flex flex-col gap-2">
           <Label>Description</Label>
           <Textarea
+            className="h-32 resize-none"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="h-24 resize-none"
           />
         </div>
-
-        <div>
+       
+        <div className="flex flex-col gap-2">
           <Label>Price per Night ($)</Label>
           <Input
-            type="number"
+            type="text" 
+            placeholder="Enter price per night"
             value={pricePerNight}
             onChange={(e) => setPricePerNight(Number(e.target.value))}
           />
@@ -226,16 +246,15 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
       </div>
     );
   }
-
   // STEP 4: IMAGE
   if (step === STEPS.IMAGE) {
     bodyContent = (
       <div>
         <Label>Image URL</Label>
         <Input
+          placeholder="https://example.com/photo.jpg"
           value={image}
           onChange={(e) => setImage(e.target.value)}
-          placeholder="https://example.com/photo.jpg"
         />
       </div>
     );
@@ -272,7 +291,11 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
             </Button>
           )}
 
-          <Button onClick={onNext} disabled={loading}>
+          <Button
+            onClick={step === STEPS.GUESTS ? handleSubmit : onNext}
+            disabled={loading}
+            className="bg-green-500 hover:bg-green-600 text-white"
+          >
             {step === STEPS.GUESTS
               ? loading
                 ? "Creating..."
