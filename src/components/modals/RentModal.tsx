@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import Select from "react-select";
 import countries from "world-countries";
 
@@ -23,6 +22,8 @@ import { categories } from "../categories/data";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "leaflet/dist/leaflet.css";
+import { CldUploadWidget } from "next-cloudinary";
+import { Upload } from "lucide-react";
 
 interface RentModalProps {
   isOpen: boolean;
@@ -213,9 +214,6 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
   if (step === STEPS.DETAILS) {
     bodyContent = (
       <div className="flex flex-col gap-6">
-        {" "}
-        {/* gap-6 দিয়ে y-axis space বাড়ানো */}
-        {/* Title */}
         <div className="flex flex-col gap-2">
           <Label>Title</Label>
           <Input
@@ -224,20 +222,20 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-     
+
         <div className="flex flex-col gap-2">
           <Label>Description</Label>
           <Textarea
-            className="h-32 resize-none"
+            className="h-24 resize-none"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-       
+
         <div className="flex flex-col gap-2">
           <Label>Price per Night ($)</Label>
           <Input
-            type="text" 
+            type="text"
             placeholder="Enter price per night"
             value={pricePerNight}
             onChange={(e) => setPricePerNight(Number(e.target.value))}
@@ -246,20 +244,46 @@ const RentModal: React.FC<RentModalProps> = ({ isOpen, onClose }) => {
       </div>
     );
   }
+
   // STEP 4: IMAGE
   if (step === STEPS.IMAGE) {
     bodyContent = (
-      <div>
-        <Label>Image URL</Label>
-        <Input
-          placeholder="https://example.com/photo.jpg"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
+      <div className="flex flex-col gap-4">
+        <label className="font-medium text-gray-700">Upload Image</label>
+
+        <CldUploadWidget
+          uploadPreset="rentiva_upload"
+          onSuccess={(result) => {
+            if (result.info?.secure_url) {
+              setImage(result.info.secure_url);
+            }
+          }}
+        >
+          {({ open }) => (
+            <button
+              type="button"
+              onClick={() => open?.()}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
+            >
+              <Upload size={20} /> {/* Lucide Upload Icon */}
+              Upload Image
+            </button>
+          )}
+        </CldUploadWidget>
+
+        {/* Image Preview */}
+        {image && (
+          <div className="mt-2">
+            <img
+              src={image}
+              alt="Uploaded"
+              className="w-full max-w-xs h-auto rounded shadow"
+            />
+          </div>
+        )}
       </div>
     );
   }
-
   // STEP 5: GUESTS
   if (step === STEPS.GUESTS) {
     bodyContent = (
